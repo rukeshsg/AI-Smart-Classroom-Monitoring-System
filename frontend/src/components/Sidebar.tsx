@@ -102,9 +102,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <button
           onClick={() => setActiveTab('live')}
           title="Go to Live Surveillance"
-          className="w-full flex items-center justify-center p-2 bg-[#141722] hover:bg-[#1a1e2c] border border-[#272b38] hover:border-emerald-500/50 rounded-xl shadow-md overflow-hidden transition-all group cursor-pointer focus:outline-none border-b border-[#1c202b]"
+          className="flex items-center px-2 py-2 border-b border-[#1c202b]/80 pb-4 focus:outline-none hover:opacity-95 transition-opacity cursor-pointer w-full text-left"
         >
-          <img src="/logo.png" alt="ClassGuard AI" className="h-9 w-auto object-contain max-w-[210px] group-hover:scale-[1.02] transition-transform" />
+          <img src="/logo.png" alt="ClassGuard AI" className="h-8 md:h-9 w-auto object-contain max-w-[200px]" />
         </button>
 
         {/* Navigation */}

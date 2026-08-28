@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #090a0f;
-  --foreground: #f8fafc;
-  --surface: #111319;
-  --surface-hover: #171a23;
-  --border: #1e222d;
-  --text-muted: #94a3b8;
-  --text-primary: #f8fafc;
+  --background: #08090d;
+  --foreground: #f1f5f9;
+  --surface: #11131b;
+  --surface-hover: #161924;
+  --border: #1b1e2a;
+  --text-muted: #808ea3;
+  --text-primary: #f1f5f9;
   --accent-mint: #10b981;
   --accent-cyan: #06b6d4;
   --accent-indigo: #6366f1;
@@ -31,6 +31,67 @@ body {
   color: var(--foreground);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
   transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Default Dark Graphite & Pitch Charcoal Theme (IQON Desktop App Aesthetic)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Pitch Charcoal Canvas */
+body,
+main,
+.bg-slate-950,
+.bg-\[\#090a0f\],
+.bg-\[\#070c18\],
+.bg-\[\#0d1424\] {
+  background-color: #08090d !important;
+  color: #f1f5f9;
+}
+
+/* Header & Sidebar Charcoal Surfaces */
+header,
+aside,
+.bg-\[\#0c0e14\],
+.bg-\[\#090b10\],
+.bg-\[\#080d1a\],
+.bg-\[\#161922\],
+.bg-\[\#141722\] {
+  background-color: #0d0f15 !important;
+  border-color: #1a1d28 !important;
+}
+
+/* Soft Rounded Cards & Dark Graphite Panels */
+.bg-slate-900,
+.bg-slate-900\/90,
+.bg-slate-900\/80,
+.bg-\[\#111319\],
+.bg-\[\#11182c\],
+.bg-\[\#070c18\] {
+  background-color: #12151f !important;
+}
+
+/* Thin Subtle Charcoal Borders */
+.border-slate-800,
+.border-slate-800\/80,
+.border-slate-800\/90,
+.border-slate-800\/60,
+.border-slate-700,
+.border-\[\#1e222d\],
+.border-\[\#1c202b\],
+.border-\[\#272b38\],
+.border-\[\#1e293b\] {
+  border-color: #1e2330 !important;
+}
+
+/* Inputs, Selects & Control Pills */
+select,
+input,
+textarea,
+.bg-slate-950\/80,
+.bg-slate-950\/90 {
+  background-color: #151824 !important;
+  color: #f1f5f9 !important;
+  border-color: #242938 !important;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────

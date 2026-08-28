@@ -46,11 +46,9 @@ export const Header: React.FC<HeaderProps> = ({
       <button
         onClick={onNavigateLive}
         title="Go to Live Surveillance"
-        className="flex items-center focus:outline-none hover:opacity-90 hover:scale-[1.01] transition-all group"
+        className="flex items-center focus:outline-none hover:opacity-95 transition-opacity cursor-pointer"
       >
-        <div className="p-1 bg-[#161922] border border-[#272b38] rounded-xl shadow-md flex items-center justify-center overflow-hidden group-hover:border-emerald-500/50 transition-colors">
-          <img src="/logo.png" alt="ClassGuard AI" className="h-8 md:h-9 w-auto object-contain max-w-[200px]" />
-        </div>
+        <img src="/logo.png" alt="ClassGuard AI" className="h-9 md:h-10 w-auto object-contain max-w-[210px]" />
       </button>
 
       {/* Center: Contextual Classroom Bar (ONLY SHOWN ON LIVE & MULTI-CAMERA VIEWS) */}

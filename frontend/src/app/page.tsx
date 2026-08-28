@@ -283,6 +283,11 @@ export default function CommandCenterPage() {
           )}
 
           {activeTab === 'settings' && <SettingsView />}
+
+          {/* Footer (At the end of scroll inside main container) */}
+          <footer className="pt-8 pb-4 border-t border-slate-800/60 mt-10 text-center text-xs text-slate-500 font-mono transition-colors">
+            © 2026 ClassGuard AI — Smart Classroom Monitoring System
+          </footer>
         </main>
       </div>
 
@@ -322,11 +327,6 @@ export default function CommandCenterPage() {
           </button>
         </div>
       )}
-
-      {/* Footer */}
-      <footer className="bg-slate-950 border-t border-slate-800/80 py-3 text-center text-xs text-slate-500 font-mono">
-        © 2025 Smart Classroom Monitoring System — Command Center
-      </footer>
     </div>
   );
 }

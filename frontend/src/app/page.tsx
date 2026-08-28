@@ -22,6 +22,7 @@ import { EvidenceGallery } from '@/components/EvidenceGallery';
 import { CameraStatusView } from '@/components/CameraStatusView';
 import { ReportsCenter } from '@/components/ReportsCenter';
 import { RecordingsView } from '@/components/RecordingsView';
+import { SettingsView } from '@/components/SettingsView';
 import { Smartphone, ShieldAlert, X } from 'lucide-react';
 
 const POPUP_COOLDOWN_MS = 600000; // 10 minutes
@@ -234,36 +235,7 @@ export default function CommandCenterPage() {
             <ReportsCenter classrooms={classrooms} selectedClassroom={selectedClassroom} />
           )}
 
-          {activeTab === 'settings' && (
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4 max-w-2xl">
-              <h2 className="text-xl font-bold text-white">System Settings</h2>
-              <p className="text-xs text-slate-400">
-                Configure classroom monitoring parameters, confidence thresholds, and video stream preferences.
-              </p>
-              <div className="space-y-3 pt-4 border-t border-slate-800 text-xs text-slate-300 font-mono">
-                <div className="flex justify-between py-2 border-b border-slate-800">
-                  <span>10-Minute Popup Cooldown:</span>
-                  <span className="text-emerald-400 font-bold">ACTIVE (600s)</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-slate-800">
-                  <span>60-Day Automatic Retention:</span>
-                  <span className="text-emerald-400 font-bold">ACTIVE (Purge Age &gt;= 60d)</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-slate-800">
-                  <span>Behavior Model Confidence:</span>
-                  <span className="text-blue-400 font-bold">0.30</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-slate-800">
-                  <span>Object Model Confidence:</span>
-                  <span className="text-blue-400 font-bold">0.35</span>
-                </div>
-                <div className="flex justify-between py-2">
-                  <span>Storage Engine:</span>
-                  <span className="text-slate-300 font-bold">SQLite + Local File Storage</span>
-                </div>
-              </div>
-            </div>
-          )}
+          {activeTab === 'settings' && <SettingsView />}
         </main>
       </div>
 

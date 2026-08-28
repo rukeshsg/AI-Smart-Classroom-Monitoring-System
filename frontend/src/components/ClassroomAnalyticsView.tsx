@@ -234,40 +234,144 @@ function SparklineTrend({
   color?: string;
   label?: string;
 }) {
-  const W = 400, H = 80, PAD = 16;
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+
+  const W = 600, H = 140, PAD_LEFT = 45, PAD_RIGHT = 20, PAD_TOP = 20, PAD_BOTTOM = 30;
+  const chartW = W - PAD_LEFT - PAD_RIGHT;
+  const chartH = H - PAD_TOP - PAD_BOTTOM;
+
   const vals = data.map(d => d[valueField] as number);
-  const maxV = Math.max(...vals, 1);
-  const points = data.map((d, i) => {
-    const x = PAD + (i / Math.max(data.length - 1, 1)) * (W - PAD * 2);
-    const y = PAD + (1 - d[valueField] / maxV) * (H - PAD * 2);
-    return `${x},${y}`;
-  });
+  const rawMax = Math.max(...vals, 1);
+  const maxV = Math.ceil(rawMax * 1.15) || 5;
+
+  const yTicks = [maxV, Math.round(maxV / 2), 0];
+
+  const getX = (i: number) => PAD_LEFT + (i / Math.max(data.length - 1, 1)) * chartW;
+  const getY = (v: number) => PAD_TOP + (1 - v / maxV) * chartH;
+
+  const points = data.map((d, i) => `${getX(i)},${getY(d[valueField])}`);
   const polyline = points.join(' ');
-  const area = `${PAD},${H - PAD} ${polyline} ${W - PAD},${H - PAD}`;
+  const area = `${PAD_LEFT},${H - PAD_BOTTOM} ${polyline} ${W - PAD_RIGHT},${H - PAD_BOTTOM}`;
+
+  const gradientId = `grad-${color.replace(/[^a-zA-Z0-9]/g, '')}-${valueField}`;
 
   return (
     <div className="space-y-2">
-      {label && <p className="text-[11px] text-slate-500 font-mono">{label}</p>}
-      <div className="relative w-full overflow-hidden rounded-xl bg-slate-950 border border-slate-800 p-2">
-        <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-16" preserveAspectRatio="none">
+      {label && (
+        <div className="flex items-center justify-between text-xs font-mono text-slate-400 px-1">
+          <span className="font-semibold text-slate-300">{label}</span>
+          {hoveredIdx !== null && data[hoveredIdx] && (
+            <span className="text-white font-bold bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
+              {data[hoveredIdx][keyField]}: <strong style={{ color }}>{data[hoveredIdx][valueField]}</strong>
+            </span>
+          )}
+        </div>
+      )}
+      <div className="relative w-full overflow-hidden rounded-2xl bg-[#070c18] border border-slate-800/90 p-3 shadow-inner">
+        <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-36" preserveAspectRatio="none">
           <defs>
-            <linearGradient id={`grad-${color.replace('#','')}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={color} stopOpacity="0.3" />
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={color} stopOpacity="0.45" />
+              <stop offset="60%" stopColor={color} stopOpacity="0.15" />
               <stop offset="100%" stopColor={color} stopOpacity="0.0" />
             </linearGradient>
           </defs>
-          <polygon points={area} fill={`url(#grad-${color.replace('#','')})`} />
-          <polyline points={polyline} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
+          {/* Horizontal Gridlines & Y-Axis Labels */}
+          {yTicks.map((tick, idx) => {
+            const y = getY(tick);
+            return (
+              <g key={idx}>
+                <line
+                  x1={PAD_LEFT}
+                  y1={y}
+                  x2={W - PAD_RIGHT}
+                  y2={y}
+                  stroke="#1e293b"
+                  strokeDasharray="4 4"
+                  strokeWidth="1"
+                />
+                <text
+                  x={PAD_LEFT - 8}
+                  y={y + 4}
+                  fill="#64748b"
+                  fontSize="10"
+                  fontFamily="monospace"
+                  textAnchor="end"
+                >
+                  {tick.toLocaleString()}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Gradient Area Fill */}
+          <polygon points={area} fill={`url(#${gradientId})`} />
+
+          {/* Line Path */}
+          <polyline
+            points={polyline}
+            fill="none"
+            stroke={color}
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Data Circles & Hover Areas */}
           {data.map((d, i) => {
-            const x = PAD + (i / Math.max(data.length - 1, 1)) * (W - PAD * 2);
-            const y = PAD + (1 - d[valueField] / maxV) * (H - PAD * 2);
-            return <circle key={i} cx={x} cy={y} r="3" fill={color} stroke="#0d1424" strokeWidth="1.5" />;
+            const cx = getX(i);
+            const cy = getY(d[valueField]);
+            const isHovered = hoveredIdx === i;
+            return (
+              <g key={i} className="cursor-pointer">
+                {isHovered && (
+                  <line
+                    x1={cx}
+                    y1={PAD_TOP}
+                    x2={cx}
+                    y2={H - PAD_BOTTOM}
+                    stroke={color}
+                    strokeDasharray="2 2"
+                    strokeWidth="1"
+                    opacity="0.6"
+                  />
+                )}
+                <circle
+                  cx={cx}
+                  cy={cy}
+                  r={isHovered ? '6' : '4'}
+                  fill={color}
+                  stroke="#070c18"
+                  strokeWidth="2"
+                  className="transition-all duration-150"
+                />
+                {/* Transparent hit area for easy hover */}
+                <rect
+                  x={cx - 15}
+                  y={PAD_TOP}
+                  width="30"
+                  height={chartH}
+                  fill="transparent"
+                  onMouseEnter={() => setHoveredIdx(i)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                />
+              </g>
+            );
           })}
         </svg>
-        {/* X-axis labels */}
-        <div className="flex justify-between mt-1 px-1">
+
+        {/* X-axis date labels */}
+        <div className="flex justify-between mt-1 pl-10 pr-4">
           {data.map((d, i) => (
-            <span key={i} className="text-[9px] text-slate-600 font-mono">{d[keyField]}</span>
+            <span
+              key={i}
+              className={`text-[10px] font-mono transition-colors ${
+                hoveredIdx === i ? 'text-white font-bold' : 'text-slate-500'
+              }`}
+            >
+              {d[keyField]}
+            </span>
           ))}
         </div>
       </div>

@@ -13,6 +13,7 @@ interface HeaderProps {
   showLiveContext?: boolean;
   theme?: 'dark' | 'light';
   toggleTheme?: () => void;
+  onNavigateLive?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -24,6 +25,7 @@ export const Header: React.FC<HeaderProps> = ({
   showLiveContext = true,
   theme = 'dark',
   toggleTheme,
+  onNavigateLive,
 }) => {
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,20 +42,16 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="h-16 bg-[#0c0e14] border-b border-[#1e222d] px-6 flex items-center justify-between text-white select-none shadow-md z-30 relative transition-colors">
-      {/* Left: Brand Identity with logo.png */}
-      <div className="flex items-center space-x-3">
-        <div className="p-1 bg-[#161922] border border-[#272b38] rounded-xl shadow-md flex items-center justify-center overflow-hidden">
-          <img src="/logo.png" alt="ClassGuard AI Logo" className="h-8 w-auto object-contain" />
+      {/* Left: Brand Identity using logo.png as sole branding element (clickable to Live Surveillance) */}
+      <button
+        onClick={onNavigateLive}
+        title="Go to Live Surveillance"
+        className="flex items-center focus:outline-none hover:opacity-90 hover:scale-[1.01] transition-all group"
+      >
+        <div className="p-1 bg-[#161922] border border-[#272b38] rounded-xl shadow-md flex items-center justify-center overflow-hidden group-hover:border-emerald-500/50 transition-colors">
+          <img src="/logo.png" alt="ClassGuard AI" className="h-8 md:h-9 w-auto object-contain max-w-[200px]" />
         </div>
-        <div>
-          <h1 className="font-extrabold text-base tracking-wide text-slate-100 font-sans">
-            ClassGuard AI
-          </h1>
-          <p className="text-[10px] text-slate-400 font-medium">
-            Smart Classroom Monitoring System
-          </p>
-        </div>
-      </div>
+      </button>
 
       {/* Center: Contextual Classroom Bar (ONLY SHOWN ON LIVE & MULTI-CAMERA VIEWS) */}
       {showLiveContext && (

@@ -95,23 +95,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="w-64 bg-[#090b10] border-r border-[#1c202b] flex flex-col justify-between select-none py-4 px-3 sticky top-0 h-screen flex-shrink-0 z-40 overflow-y-auto transition-colors">
+    <aside className="w-64 bg-[#090b10] border-r border-[#1c202b] flex flex-col justify-between select-none py-4 px-3 sticky top-0 h-screen flex-shrink-0 z-40 overflow-y-auto no-scrollbar transition-colors">
       {/* Top Section */}
       <div className="space-y-4">
-        {/* Brand with logo.png */}
-        <div className="flex items-center space-x-3 px-2 py-2 border-b border-[#1c202b] pb-3">
-          <div className="p-1 bg-[#141722] border border-[#272b38] rounded-xl shadow-md flex items-center justify-center overflow-hidden flex-shrink-0">
-            <img src="/logo.png" alt="ClassGuard AI Logo" className="h-8 w-auto object-contain" />
-          </div>
-          <div className="min-w-0">
-            <h1 className="font-extrabold text-sm tracking-wide text-slate-100 font-sans truncate">
-              ClassGuard AI
-            </h1>
-            <p className="text-[10px] text-slate-400 font-medium truncate">
-              Smart Classroom Monitoring System
-            </p>
-          </div>
-        </div>
+        {/* Brand with logo.png as sole branding element (clickable to Live Surveillance) */}
+        <button
+          onClick={() => setActiveTab('live')}
+          title="Go to Live Surveillance"
+          className="w-full flex items-center justify-center p-2 bg-[#141722] hover:bg-[#1a1e2c] border border-[#272b38] hover:border-emerald-500/50 rounded-xl shadow-md overflow-hidden transition-all group cursor-pointer focus:outline-none border-b border-[#1c202b]"
+        >
+          <img src="/logo.png" alt="ClassGuard AI" className="h-9 w-auto object-contain max-w-[210px] group-hover:scale-[1.02] transition-transform" />
+        </button>
 
         {/* Navigation */}
         <nav className="space-y-0.5">

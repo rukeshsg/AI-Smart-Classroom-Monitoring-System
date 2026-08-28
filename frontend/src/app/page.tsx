@@ -191,6 +191,7 @@ export default function CommandCenterPage() {
         showLiveContext={activeTab === 'live' || activeTab === 'multi-camera'}
         theme={theme}
         toggleTheme={toggleTheme}
+        onNavigateLive={() => setActiveTab('live')}
       />
 
       {/* Main Body */}
@@ -207,7 +208,7 @@ export default function CommandCenterPage() {
         />
 
         {/* Main Content */}
-        <main className="flex-1 p-6 overflow-y-auto bg-[#090a0f] transition-colors">
+        <main className="flex-1 p-6 overflow-y-auto no-scrollbar bg-[#090a0f] transition-colors">
 
           {activeTab === 'live' && (
             <LiveSurveillanceFeed

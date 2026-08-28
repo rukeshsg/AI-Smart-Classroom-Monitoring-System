@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({
         title="Go to Live Surveillance"
         className="flex items-center focus:outline-none hover:opacity-95 hover:scale-[1.02] transition-all cursor-pointer py-1"
       >
-        <img src="/logo.png" alt="ClassGuard AI" className="h-10 md:h-12 w-auto object-contain max-w-[260px]" />
+        <img src="/logo.png" alt="ClassGuard AI" className="h-10 md:h-28 w-auto object-contain max-w-[260px]" />
       </button>
 
       {/* Center: Contextual Classroom Bar (ONLY SHOWN ON LIVE & MULTI-CAMERA VIEWS) */}

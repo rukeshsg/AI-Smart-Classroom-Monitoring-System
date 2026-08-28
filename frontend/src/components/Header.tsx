@@ -41,14 +41,14 @@ export const Header: React.FC<HeaderProps> = ({
   );
 
   return (
-    <header className="h-16 md:h-18 bg-[#0c0e14] border-b border-[#1e222d] px-6 flex items-center justify-between text-white select-none shadow-md z-30 relative transition-colors">
+    <header className="h-16 flex-shrink-0 bg-[#0c0e14] border-b border-[#1e222d] px-6 flex items-center justify-between text-white select-none shadow-md z-30 relative transition-colors">
       {/* Left: Prominent ClassGuard AI Logo (Clickable to Live Surveillance) */}
       <button
         onClick={onNavigateLive}
         title="Go to Live Surveillance"
         className="flex items-center focus:outline-none hover:opacity-95 hover:scale-[1.02] transition-all cursor-pointer py-1"
       >
-        <img src="/logo.png" alt="ClassGuard AI" className="h-10 md:h-28 w-auto object-contain max-w-[260px]" />
+        <img src="/logo.png" alt="ClassGuard AI" className="h-9 md:h-10 w-auto object-contain max-w-[240px]" />
       </button>
 
       {/* Center: Contextual Classroom Bar (ONLY SHOWN ON LIVE & MULTI-CAMERA VIEWS) */}

@@ -95,11 +95,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="w-64 bg-[#090b10] border-r border-[#1c202b] flex flex-col justify-between select-none py-4 px-3 sticky top-0 h-screen flex-shrink-0 z-40 overflow-y-auto no-scrollbar transition-colors">
+    <aside className="w-64 bg-[#090b10] border-r border-[#1c202b] flex flex-col justify-between select-none py-3 px-3 h-full flex-shrink-0 z-40 overflow-y-auto no-scrollbar transition-colors">
       {/* Top Section */}
       <div className="space-y-2">
         {/* Navigation */}
-        <nav className="space-y-0.5 pt-1">
+        <nav className="space-y-0.5 pt-0.5">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -107,7 +107,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
                   isActive
                     ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white shadow-lg shadow-emerald-600/20 font-bold'
                     : 'text-slate-300 hover:text-white hover:bg-[#141722]'

@@ -1,0 +1,59 @@
+# ─── Python ──────────────────────────────────────────────
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+*.so
+*.dylib
+
+# ─── Node / Frontend ─────────────────────────────────────
+node_modules/
+.next/
+.turbo/
+out/
+.vercel/
+*.tsbuildinfo
+
+# ─── Environment / Secrets ───────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Runtime Data & Datasets (generated/large, not source)
+logs/
+screenshots/
+recordings/
+reports/
+datasets/
+
+
+# ─── Database files (runtime state) ──────────────────────
+*.db
+*.sqlite
+*.sqlite3
+
+# ─── Model weights (large binary files) ──────────────────
+# NOTE: keep yolov8n.pt in project root if small enough for repo
+# models/*.pt  ← uncomment to exclude trained weights from git
+
+# ─── OS & IDE ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+.idea/
+.vscode/settings.json
+*.sublime-workspace
+
+# ─── Cache & Temp ────────────────────────────────────────
+.cache/
+*.tmp
+*.temp
+tmp/

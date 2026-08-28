@@ -97,18 +97,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside className="w-64 bg-[#090b10] border-r border-[#1c202b] flex flex-col justify-between select-none py-4 px-3 sticky top-0 h-screen flex-shrink-0 z-40 overflow-y-auto no-scrollbar transition-colors">
       {/* Top Section */}
-      <div className="space-y-4">
-        {/* Brand with logo.png as sole branding element (clickable to Live Surveillance) */}
-        <button
-          onClick={() => setActiveTab('live')}
-          title="Go to Live Surveillance"
-          className="flex items-center px-2 py-2 border-b border-[#1c202b]/80 pb-4 focus:outline-none hover:opacity-95 transition-opacity cursor-pointer w-full text-left"
-        >
-          <img src="/logo.png" alt="ClassGuard AI" className="h-8 md:h-9 w-auto object-contain max-w-[200px]" />
-        </button>
-
+      <div className="space-y-2">
         {/* Navigation */}
-        <nav className="space-y-0.5">
+        <nav className="space-y-0.5 pt-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;

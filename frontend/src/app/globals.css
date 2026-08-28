@@ -1,12 +1,89 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020617;
+  --background: #090a0f;
   --foreground: #f8fafc;
+  --surface: #111319;
+  --surface-hover: #171a23;
+  --border: #1e222d;
+  --text-muted: #94a3b8;
+  --text-primary: #f8fafc;
+  --accent-mint: #10b981;
+  --accent-cyan: #06b6d4;
+  --accent-indigo: #6366f1;
+}
+
+[data-theme='light'] {
+  --background: #f1f5f9;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-hover: #f8fafc;
+  --border: #e2e8f0;
+  --text-muted: #64748b;
+  --text-primary: #0f172a;
+  --accent-mint: #059669;
+  --accent-cyan: #0891b2;
+  --accent-indigo: #4f46e5;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
+
+/* Light mode overrides for Tailwind dark classes when light theme is active */
+[data-theme='light'] .bg-slate-950,
+[data-theme='light'] .bg-\[\#080d1a\],
+[data-theme='light'] .bg-\[\#0d1424\],
+[data-theme='light'] .bg-\[\#070c18\],
+[data-theme='light'] .bg-\[\#090a0f\] {
+  background-color: #f8fafc !important;
+}
+
+[data-theme='light'] .bg-slate-900,
+[data-theme='light'] .bg-\[\#111319\],
+[data-theme='light'] .bg-\[\#11182c\] {
+  background-color: #ffffff !important;
+}
+
+[data-theme='light'] .border-slate-800,
+[data-theme='light'] .border-slate-800\/80,
+[data-theme='light'] .border-slate-800\/90,
+[data-theme='light'] .border-slate-800\/60,
+[data-theme='light'] .border-slate-700 {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme='light'] .text-slate-100,
+[data-theme='light'] .text-slate-200,
+[data-theme='light'] .text-slate-300,
+[data-theme='light'] .text-white {
+  color: #0f172a !important;
+}
+
+[data-theme='light'] .text-slate-400,
+[data-theme='light'] .text-slate-500 {
+  color: #64748b !important;
+}
+
+[data-theme='light'] .hover\:bg-slate-800:hover,
+[data-theme='light'] .hover\:bg-slate-800\/60:hover,
+[data-theme='light'] .hover\:bg-slate-800\/40:hover {
+  background-color: #f1f5f9 !important;
+}
+
+/* Glass & Glow Utility Classes */
+.glass-panel {
+  background: rgba(17, 19, 25, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+[data-theme='light'] .glass-panel {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+

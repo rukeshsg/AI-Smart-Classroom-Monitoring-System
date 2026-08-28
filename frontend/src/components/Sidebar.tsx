@@ -41,6 +41,8 @@ interface SidebarProps {
   activeAlertsCount: number;
   isRecording: boolean;
   onToggleRecording: () => void;
+  theme?: 'dark' | 'light';
+  toggleTheme?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -49,6 +51,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   activeAlertsCount,
   isRecording,
   onToggleRecording,
+  theme = 'dark',
+  toggleTheme,
 }) => {
   // Live uptime clock — client-side only to avoid hydration mismatch
   const [uptimeLabel, setUptimeLabel] = useState<string>('');
@@ -91,20 +95,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="w-64 bg-[#080d1a] border-r border-slate-800/80 flex flex-col justify-between select-none py-4 px-3 sticky top-0 h-screen flex-shrink-0 z-40 overflow-y-auto">
+    <aside className="w-64 bg-[#090b10] border-r border-[#1c202b] flex flex-col justify-between select-none py-4 px-3 sticky top-0 h-screen flex-shrink-0 z-40 overflow-y-auto transition-colors">
       {/* Top Section */}
       <div className="space-y-4">
-        {/* Brand */}
-        <div className="flex items-center space-x-3 px-2 py-1.5 border-b border-slate-800/60 pb-3">
-          <div className="p-2 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400 shadow-md flex items-center justify-center">
-            <Shield className="w-6 h-6" />
+        {/* Brand with logo.png */}
+        <div className="flex items-center space-x-3 px-2 py-2 border-b border-[#1c202b] pb-3">
+          <div className="p-1 bg-[#141722] border border-[#272b38] rounded-xl shadow-md flex items-center justify-center overflow-hidden flex-shrink-0">
+            <img src="/logo.png" alt="ClassGuard AI Logo" className="h-8 w-auto object-contain" />
           </div>
-          <div>
-            <h1 className="font-extrabold text-sm tracking-wider text-slate-100 uppercase font-sans">
-              COMMAND CENTER
+          <div className="min-w-0">
+            <h1 className="font-extrabold text-sm tracking-wide text-slate-100 font-sans truncate">
+              ClassGuard AI
             </h1>
-            <p className="text-[10px] text-slate-400 font-medium">
-              Smart Classroom Monitoring
+            <p className="text-[10px] text-slate-400 font-medium truncate">
+              Smart Classroom Monitoring System
             </p>
           </div>
         </div>
@@ -120,8 +124,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => setActiveTab(item.id)}
                 className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                   isActive
-                    ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 text-white shadow-lg shadow-indigo-600/30 font-bold'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                    ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white shadow-lg shadow-emerald-600/20 font-bold'
+                    : 'text-slate-300 hover:text-white hover:bg-[#141722]'
                 }`}
               >
                 <div className="flex items-center space-x-3">
@@ -140,9 +144,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Bottom Section */}
-      <div className="space-y-3 pt-3 border-t border-slate-800/80">
+      <div className="space-y-3 pt-3 border-t border-[#1c202b]">
+        {/* Theme Selector Pill (IQON Style) */}
+        {toggleTheme && (
+          <button
+            onClick={toggleTheme}
+            className="w-full bg-[#141722] hover:bg-[#1a1e2c] border border-[#272b38] p-2.5 rounded-xl flex items-center justify-between text-xs text-slate-300 font-semibold transition-all"
+          >
+            <span className="text-[11px] text-slate-400">Theme Mode</span>
+            <div className="flex items-center space-x-1.5 bg-[#090b10] px-2.5 py-1 rounded-lg border border-[#1c202b] text-[11px] text-emerald-400 font-bold">
+              <span>{theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}</span>
+            </div>
+          </button>
+        )}
+
         {/* System Status */}
-        <div className="bg-[#11182c] border border-slate-800/90 p-3 rounded-xl flex items-center space-x-3 shadow-md">
+        <div className="bg-[#141722] border border-[#272b38] p-3 rounded-xl flex items-center space-x-3 shadow-md">
           <div className="p-1.5 bg-emerald-500/20 rounded-full text-emerald-400 flex-shrink-0">
             <CheckCircle2 className="w-4 h-4" />
           </div>
@@ -158,7 +175,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           className={`w-full py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-center space-x-2.5 shadow-xl transition-all ${
             isRecording
               ? 'bg-rose-600 hover:bg-rose-700 text-white animate-pulse'
-              : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white shadow-indigo-600/30'
+              : 'bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:opacity-95 text-white shadow-emerald-600/20'
           }`}
         >
           <div className={`w-5 h-5 rounded-full flex items-center justify-center shadow-sm ${isRecording ? 'bg-white' : 'bg-white/20'}`}>

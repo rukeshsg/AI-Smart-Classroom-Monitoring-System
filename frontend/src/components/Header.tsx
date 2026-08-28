@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Shield, Bell, Search, Maximize2, User, X, Check, AlertTriangle } from 'lucide-react';
+import { Shield, Bell, Search, Maximize2, User, X, Check, AlertTriangle, Sun, Moon } from 'lucide-react';
 import { Classroom, Alert } from '@/types';
 
 interface HeaderProps {
@@ -11,6 +11,8 @@ interface HeaderProps {
   activeAlerts: Alert[];
   onDismissAlert?: (id: string) => void;
   showLiveContext?: boolean;
+  theme?: 'dark' | 'light';
+  toggleTheme?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -20,6 +22,8 @@ export const Header: React.FC<HeaderProps> = ({
   activeAlerts,
   onDismissAlert,
   showLiveContext = true,
+  theme = 'dark',
+  toggleTheme,
 }) => {
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,17 +39,17 @@ export const Header: React.FC<HeaderProps> = ({
   );
 
   return (
-    <header className="h-16 bg-slate-900 border-b border-slate-800 px-6 flex items-center justify-between text-white select-none shadow-md z-30 relative">
-      {/* Left: Brand Identity */}
+    <header className="h-16 bg-[#0c0e14] border-b border-[#1e222d] px-6 flex items-center justify-between text-white select-none shadow-md z-30 relative transition-colors">
+      {/* Left: Brand Identity with logo.png */}
       <div className="flex items-center space-x-3">
-        <div className="p-2 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl shadow-md text-white">
-          <Shield className="w-6 h-6" />
+        <div className="p-1 bg-[#161922] border border-[#272b38] rounded-xl shadow-md flex items-center justify-center overflow-hidden">
+          <img src="/logo.png" alt="ClassGuard AI Logo" className="h-8 w-auto object-contain" />
         </div>
         <div>
-          <h1 className="font-extrabold text-base tracking-wider text-slate-100 uppercase">
-            Command Center
+          <h1 className="font-extrabold text-base tracking-wide text-slate-100 font-sans">
+            ClassGuard AI
           </h1>
-          <p className="text-[11px] text-slate-400 font-medium">
+          <p className="text-[10px] text-slate-400 font-medium">
             Smart Classroom Monitoring System
           </p>
         </div>
@@ -59,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
             <select
               value={selectedClassroom}
               onChange={(e) => setSelectedClassroom(e.target.value)}
-              className="bg-slate-900 border border-slate-700 text-white font-bold rounded-lg px-2.5 py-1 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+              className="bg-slate-900 border border-slate-700 text-white font-bold rounded-lg px-2.5 py-1 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
             >
               {classrooms.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -98,12 +102,23 @@ export const Header: React.FC<HeaderProps> = ({
       )}
 
       {/* Right: Functional Header Icons */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-3">
+        {/* Theme Switcher Toggle Button */}
+        {toggleTheme && (
+          <button
+            onClick={toggleTheme}
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors border border-slate-800 flex items-center justify-center"
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-400" />}
+          </button>
+        )}
+
         {/* Search Icon & Action */}
         <button
           onClick={() => setShowSearchModal(true)}
           title="Search Classrooms & Devices"
-          className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+          className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors"
         >
           <Search className="w-4 h-4" />
         </button>
@@ -118,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
             }
           }}
           title="Toggle Fullscreen View"
-          className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+          className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors"
         >
           <Maximize2 className="w-4 h-4" />
         </button>
@@ -128,7 +143,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={() => setShowAlertDropdown(!showAlertDropdown)}
             title="View Active Notifications"
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors relative"
+            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors relative"
           >
             <Bell className="w-5 h-5" />
             {activeAlerts.length > 0 && (
@@ -183,7 +198,7 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={() => setShowProfileModal(true)}
           className="flex items-center space-x-3 text-left hover:opacity-80 transition-opacity"
         >
-          <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-md">
+          <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xs shadow-md">
             <User className="w-4 h-4" />
           </div>
           <div className="hidden lg:block text-left text-xs">

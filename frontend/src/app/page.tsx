@@ -39,6 +39,28 @@ export default function CommandCenterPage() {
   const [peakOccupancy, setPeakOccupancy] = useState<number>(0);
   const [isRecording, setIsRecording] = useState(false);
 
+  // Persistent Theme Mode (Dark/Light)
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    const saved = typeof window !== 'undefined' ? (localStorage.getItem('classguard_theme') as 'dark' | 'light') : null;
+    if (saved === 'dark' || saved === 'light') {
+      setTheme(saved);
+      document.documentElement.setAttribute('data-theme', saved);
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('classguard_theme', next);
+      document.documentElement.setAttribute('data-theme', next);
+      return next;
+    });
+  }, []);
+
   // Active Fighting State
   const [activeFightingState, setActiveFightingState] = useState<{
     is_active: boolean;
@@ -68,64 +90,84 @@ export default function CommandCenterPage() {
         setRecentEvents(eData);
         setEvidenceList(evData);
       } catch (err) {
-        console.error('Error initializing Command Center data:', err);
+        console.error('Error fetching initial data:', err);
       }
     }
     initData();
   }, []);
 
-  // WebSocket for real-time updates
+  // Connect WebSocket for real-time live monitoring telemetry
   useEffect(() => {
-    const ws = connectWebSocket(selectedClassroom, (msg) => {
-      if (msg.type === 'new_alert') {
-        const newAlt: Alert = msg.data;
-        setAlerts((prev) => [newAlt, ...prev]);
-
-        // Enforce 10-minute popup cooldown per classroom+type
-        const cooldownKey = `${newAlt.classroom_id}_${newAlt.alert_type}`;
-        const lastTime = lastPopupTimesRef.current[cooldownKey] || 0;
-        const now = Date.now();
-        if (newAlt.trigger_popup && now - lastTime >= POPUP_COOLDOWN_MS) {
-          lastPopupTimesRef.current[cooldownKey] = now;
-          setToastAlert(newAlt);
+    const ws = connectWebSocket(selectedClassroom, (data: any) => {
+      if (data.event === 'occupancy_update' || data.type === 'occupancy_update') {
+        if (data.classroom_id === selectedClassroom || data.data?.classroom_id === selectedClassroom) {
+          const occ = data.occupancy ?? data.data?.occupancy;
+          const peak = data.peak_occupancy ?? data.data?.peak_occupancy;
+          if (occ !== undefined) setCurrentOccupancy(occ);
+          if (peak !== undefined) setPeakOccupancy(peak);
         }
-      } else if (msg.type === 'new_detection') {
-        setRecentEvents((prev) => [msg.data, ...prev.slice(0, 19)]);
-      } else if (msg.type === 'new_evidence') {
-        setEvidenceList((prev) => [msg.data, ...prev.slice(0, 19)]);
-      } else if (msg.type === 'occupancy_update') {
-        if (msg.classroom_id === selectedClassroom) {
-          setCurrentOccupancy(msg.occupancy ?? 0);
-          setPeakOccupancy(msg.peak_occupancy ?? 0);
-          if (msg.active_fighting) {
-            setActiveFightingState(msg.active_fighting);
+      } else if (data.event === 'new_detection' || data.type === 'new_detection') {
+        const det = data.detection || data.data;
+        if (det) {
+          setRecentEvents((prev) => [det, ...prev.slice(0, 49)]);
+        }
+      } else if (data.event === 'new_alert' || data.type === 'new_alert') {
+        const alt: Alert = data.alert || data.data;
+        if (alt) {
+          setAlerts((prev) => [alt, ...prev]);
+
+          const key = `${alt.classroom_id}_${alt.alert_type}`;
+          const now = Date.now();
+          const lastTime = lastPopupTimesRef.current[key] || 0;
+
+          if (now - lastTime >= POPUP_COOLDOWN_MS) {
+            lastPopupTimesRef.current[key] = now;
+            setToastAlert(alt);
+
+            if (alt.alert_type === 'FIGHTING_ALERT') {
+              setActiveFightingState({
+                is_active: true,
+                classroom_id: alt.classroom_id,
+                time: alt.time,
+              });
+            }
           }
+        }
+      } else if (data.event === 'session_status' || data.type === 'session_status') {
+        const recStatus = data.is_recording ?? data.data?.is_recording;
+        if (recStatus !== undefined) {
+          setIsRecording(recStatus);
         }
       }
     });
-    return () => { ws.close(); };
+
+    return () => {
+      ws.close();
+    };
   }, [selectedClassroom]);
 
-  const handleToggleRecording = useCallback(async () => {
+  const handleToggleRecording = async () => {
     try {
       if (isRecording) {
         await stopMonitoringSession(selectedClassroom);
         setIsRecording(false);
       } else {
-        const recType = activeTab === 'multi-camera' ? 'Multi-Camera Overview' : 'Single Camera';
-        await startMonitoringSession(selectedClassroom, recType);
+        await startMonitoringSession(selectedClassroom);
         setIsRecording(true);
       }
     } catch (err) {
       console.error('Error toggling session recording:', err);
     }
-  }, [isRecording, selectedClassroom, activeTab]);
+  };
 
-  // Client-side dismiss: removes from UI state only.
-  // Backend persists the alert — for full delete, use ActiveAlertsPanel's delete button.
-  const handleDismissAlert = useCallback((id: string) => {
-    setAlerts((prev) => prev.filter((a) => a.id !== id));
-  }, []);
+  const handleDismissAlert = async (id: string) => {
+    try {
+      setAlerts((prev) => prev.filter((a) => a.id !== id));
+      await fetch(`http://localhost:8000/api/alerts/${id}`, { method: 'DELETE' });
+    } catch (err) {
+      console.error('Error dismissing alert:', err);
+    }
+  };
 
   // Called when a classroom is added via AddClassroomModal
   const handleClassroomAdded = useCallback(async () => {
@@ -138,7 +180,7 @@ export default function CommandCenterPage() {
   }, []);
 
   return (
-    <div className="h-screen bg-slate-950 text-slate-100 flex flex-col font-sans antialiased overflow-hidden">
+    <div className="h-screen bg-[#090a0f] text-slate-100 flex flex-col font-sans antialiased overflow-hidden transition-colors">
       {/* Header */}
       <Header
         classrooms={classrooms}
@@ -147,6 +189,8 @@ export default function CommandCenterPage() {
         activeAlerts={alerts}
         onDismissAlert={handleDismissAlert}
         showLiveContext={activeTab === 'live' || activeTab === 'multi-camera'}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
 
       {/* Main Body */}
@@ -158,10 +202,12 @@ export default function CommandCenterPage() {
           activeAlertsCount={alerts.length}
           isRecording={isRecording}
           onToggleRecording={handleToggleRecording}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
 
         {/* Main Content */}
-        <main className="flex-1 p-6 overflow-y-auto bg-slate-950">
+        <main className="flex-1 p-6 overflow-y-auto bg-[#090a0f] transition-colors">
 
           {activeTab === 'live' && (
             <LiveSurveillanceFeed

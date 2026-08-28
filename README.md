@@ -14,7 +14,7 @@
 
 ---
 
-![Command Center Interface](sample_dashboard_default_page.png)
+![Command Center Interface](assets/dashboard.png)
 
 </div>
 

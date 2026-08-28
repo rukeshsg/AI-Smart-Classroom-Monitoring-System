@@ -33,39 +33,103 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Light mode overrides for Tailwind dark classes when light theme is active */
-[data-theme='light'] .bg-slate-950,
-[data-theme='light'] .bg-\[\#080d1a\],
-[data-theme='light'] .bg-\[\#0d1424\],
-[data-theme='light'] .bg-\[\#070c18\],
-[data-theme='light'] .bg-\[\#090a0f\] {
+/* ─────────────────────────────────────────────────────────────────────────────
+   Light Mode Theme Overrides (Unified & Professional)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Header & Header Controls */
+[data-theme='light'] header,
+[data-theme='light'] .bg-\[\#0c0e14\],
+[data-theme='light'] .bg-\[\#161922\] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme='light'] header .bg-slate-950\/80 {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[data-theme='light'] header .bg-slate-800 {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Sidebar & Navigation */
+[data-theme='light'] aside,
+[data-theme='light'] .bg-\[\#090b10\],
+[data-theme='light'] .bg-\[\#080d1a\] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme='light'] aside .bg-\[\#141722\] {
   background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme='light'] aside nav button:not(.bg-gradient-to-r) {
+  color: #475569 !important;
+}
+
+[data-theme='light'] aside nav button:not(.bg-gradient-to-r) svg {
+  color: #64748b !important;
+}
+
+[data-theme='light'] aside nav button:not(.bg-gradient-to-r):hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* Main Canvas & Dashboard Cards */
+[data-theme='light'] main,
+[data-theme='light'] .bg-slate-950,
+[data-theme='light'] .bg-\[\#090a0f\],
+[data-theme='light'] .bg-\[\#070c18\],
+[data-theme='light'] .bg-\[\#0d1424\] {
+  background-color: #f1f5f9 !important;
 }
 
 [data-theme='light'] .bg-slate-900,
 [data-theme='light'] .bg-\[\#111319\],
 [data-theme='light'] .bg-\[\#11182c\] {
   background-color: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05) !important;
 }
 
 [data-theme='light'] .border-slate-800,
 [data-theme='light'] .border-slate-800\/80,
 [data-theme='light'] .border-slate-800\/90,
 [data-theme='light'] .border-slate-800\/60,
-[data-theme='light'] .border-slate-700 {
+[data-theme='light'] .border-slate-700,
+[data-theme='light'] .border-\[\#1e222d\],
+[data-theme='light'] .border-\[\#1c202b\],
+[data-theme='light'] .border-\[\#272b38\] {
   border-color: #e2e8f0 !important;
 }
 
+/* Typography & Contrast in Light Mode */
 [data-theme='light'] .text-slate-100,
 [data-theme='light'] .text-slate-200,
-[data-theme='light'] .text-slate-300,
-[data-theme='light'] .text-white {
+[data-theme='light'] .text-slate-300 {
   color: #0f172a !important;
 }
 
 [data-theme='light'] .text-slate-400,
 [data-theme='light'] .text-slate-500 {
-  color: #64748b !important;
+  color: #475569 !important;
+}
+
+[data-theme='light'] select,
+[data-theme='light'] input,
+[data-theme='light'] textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
 }
 
 [data-theme='light'] .hover\:bg-slate-800:hover,
